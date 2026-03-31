@@ -257,6 +257,8 @@ class ControlPanel {
                     bfStreamerBoxGanglion.draw();
                     dataLogBoxGanglion.draw(); //Drawing here allows max file size dropdown to be drawn on top
                 }
+            } else if (eegDataSource == DATASOURCE_LSL) {
+                // No extra configuration needed; channel count is auto-detected from the stream
             } else if (eegDataSource == DATASOURCE_STREAMING) {
                 streamingBoardBox.draw();
             }
@@ -313,7 +315,7 @@ class ControlPanel {
             dataLogger.setSessionName(controlPanel.dataLogBoxCyton.getSessionTextfieldString());
         } else if (eegDataSource == DATASOURCE_GANGLION) {
             dataLogger.setSessionName(controlPanel.dataLogBoxGanglion.getSessionTextfieldString());
-        } else if (eegDataSource == DATASOURCE_SYNTHETIC) {
+        } else if (eegDataSource == DATASOURCE_SYNTHETIC || eegDataSource == DATASOURCE_LSL) {
             dataLogger.setSessionName(directoryManager.getFileNameDateTime());
         }
     }
@@ -360,7 +362,7 @@ class DataSourceBox {
     private MenuList sourceList;
 
     DataSourceBox(int _x, int _y, int _w, int _h, int _padding) {
-        numItems = 5;
+        numItems = 6;
         x = _x;
         y = _y;
         w = _w;
@@ -401,6 +403,7 @@ class DataSourceBox {
         sourceList.addItem("GANGLION (live)", DATASOURCE_GANGLION);
         sourceList.addItem("PLAYBACK (from file)", DATASOURCE_PLAYBACKFILE);
         sourceList.addItem("SYNTHETIC (algorithmic)", DATASOURCE_SYNTHETIC);
+        sourceList.addItem("LIVE (from Lab Streaming Layer)", DATASOURCE_LSL);
         sourceList.addItem("STREAMING (from external)", DATASOURCE_STREAMING);
         sourceList.scrollerLength = 10;
         sourceList.addCallback(new CallbackListener() {
@@ -426,6 +429,9 @@ class DataSourceBox {
                         controlPanel.wifiBox.setDefaultToDynamicIP();
                     } else if (eegDataSource == DATASOURCE_PLAYBACKFILE) {
                         //GUI auto detects number of channels for playback when file is selected
+                    } else if (eegDataSource == DATASOURCE_LSL) {
+                        // Channel count is auto-detected from the LSL stream on session start
+                        updateToNChan(8); // default until stream is connected
                     } else if (eegDataSource == DATASOURCE_STREAMING) {
                         //do nothing for now
                     } else if (eegDataSource == DATASOURCE_SYNTHETIC) {
