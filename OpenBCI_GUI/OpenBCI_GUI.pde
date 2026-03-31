@@ -939,7 +939,7 @@ void systemUpdate() { // for updating data values and variables
 
 void systemDraw() { //for drawing to the screen
     //redraw the screen...not every time, get paced by when data is being plotted
-    background(OPENBCI_DARKBLUE);  //clear the screen
+    background(255, 0, 0);  //clear the screen
     noStroke();
     //background(255);  //clear the screen
 
