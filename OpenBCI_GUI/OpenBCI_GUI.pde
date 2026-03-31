@@ -97,6 +97,7 @@ final int DATASOURCE_CYTON = 0; // new default, data from serial with Accel data
 final int DATASOURCE_GANGLION = 1;  //looking for signal from OpenBCI board via Serial/COM port, no Aux data
 final int DATASOURCE_PLAYBACKFILE = 2;  //playback from a pre-recorded text file
 final int DATASOURCE_SYNTHETIC = 3;  //Synthetically generated data
+final int DATASOURCE_LSL = 4;        //take input from Lab Streaming Layer
 final int DATASOURCE_STREAMING = 5;
 public int eegDataSource = -1; //default to none of the options
 final static int NUM_ACCEL_DIMS = 3;
@@ -629,9 +630,13 @@ void initSystem() {
                 currentBoard = new BoardGanglionNative(ganglionName, showUpgradePopup);
             }
             break;
+        case DATASOURCE_LSL:
+            currentBoard = new DataSourceLSL(nchan);
+            println("OpenBCI_GUI: Init session using LSL data source");
+            break;
         case DATASOURCE_STREAMING:
             currentBoard = new BoardBrainFlowStreaming(
-                    controlPanel.streamingBoardBox.getBoard().getBoardId(), 
+                    controlPanel.streamingBoardBox.getBoard().getBoardId(),
                     controlPanel.streamingBoardBox.getIP(),
                     controlPanel.streamingBoardBox.getPort()
                     );

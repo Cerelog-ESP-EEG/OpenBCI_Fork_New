@@ -98,7 +98,8 @@ class SessionSettings {
         "PlaybackUserSettings.json",
         "SynthFourUserSettings.json",
         "SynthEightUserSettings.json",
-        "SynthSixteenUserSettings.json"
+        "SynthSixteenUserSettings.json",
+        "LSLUserSettings.json"
         };
     final String[] defaultSettingsFiles = {
         "CytonDefaultSettings.json",
@@ -107,7 +108,8 @@ class SessionSettings {
         "PlaybackDefaultSettings.json",
         "SynthFourDefaultSettings.json",
         "SynthEightDefaultSettings.json",
-        "SynthSixteenDefaultSettings.json"
+        "SynthSixteenDefaultSettings.json",
+        "LSLDefaultSettings.json"
         };
 
     //Used to print the status of each channel in the console when loading settings
@@ -1005,7 +1007,7 @@ class SessionSettings {
       */
     String getPath(String _mode, int dataSource, int _nchan) {
         String filePath = directoryManager.getSettingsPath();
-        String[] fileNames = new String[7];
+        String[] fileNames = new String[8];
         if (_mode.equals("Default")) {
             fileNames = defaultSettingsFiles;
         } else if (_mode.equals("User")) {
@@ -1030,6 +1032,9 @@ class SessionSettings {
                 } else {
                     filePath += fileNames[6];
                 }
+            } else if (dataSource == DATASOURCE_LSL) {
+                // Use a single settings file for LSL (channel count determined at runtime from stream)
+                filePath += fileNames[7];
             }
         }
         return filePath;
